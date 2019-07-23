@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package test;
+
+import "github.com/infobloxopen/protoc-gen-atlas-query-validate/options/query_validate.proto";
+import "github.com/infobloxopen/atlas-app-toolkit/query/collection_operators.proto";
+
+message Test{
+    string subject = 1 [(atlas.query.validate).sorting.disable = true];
+    string name = 2 [(atlas.query.validate).filtering.deny = MATCH];
+}
+
+message ListRequest {
+    infoblox.api.Filtering filter = 1;
+    infoblox.api.Sorting order_by = 2;
+}
+
+message ListTestResponse {
+    repeated Test results = 1;
+}
+
+service TestService {
+    rpc List (ListRequest) returns (ListTestResponse) {
+    }
+}
